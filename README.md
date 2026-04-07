@@ -84,3 +84,60 @@
   </div>
   <button popovertarget="order-modal">Confirm Order</button>
   ```
+
+---
+
+## Episode 3 — Styleguide to Tailwind Conversion
+
+- **Disable all default Tailwind colors to create a bespoke, design-specific color palette.**
+  ```css
+  /* resources/css/app.css */
+  @theme {
+    --color-*: initial;
+
+    --color-red: #C73B0F;
+    --color-green: #1EA575;
+    --color-rose-50: #FCF8F6;
+    --color-rose-100: #F5EDED;
+    --color-rose-300: #CAAFA7;
+    --color-rose-400: #AD8A85;
+    --color-rose-500: #87635A;
+    --color-rose-900: #260F08;
+  }
+  ```
+
+- **Restrict font weights to only what the design needs.**
+  ```css
+  @theme {
+    --font-weight-*: initial;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 600;
+    --font-weight-bold: 700;
+  }
+  ```
+
+- **Load custom fonts via Google Fonts instead of local files.**
+  ```html
+  <!-- resources/views/welcome.blade.php -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;600;700&display=swap" rel="stylesheet">
+  ```
+  ```css
+  /* resources/css/app.css */
+  @theme {
+    --font-family-sans: 'Red Hat Text', sans-serif;
+  }
+  ```
+
+- **Build a visual color swatch page to verify your theme is working correctly.**
+  ```html
+  <div class="flex gap-4 p-8">
+    <div class="size-24 rounded-lg bg-red"></div>
+    <div class="size-24 rounded-lg bg-green"></div>
+    <div class="size-24 rounded-lg bg-rose-50"></div>
+    <div class="size-24 rounded-lg bg-rose-100"></div>
+    <div class="size-24 rounded-lg bg-rose-300"></div>
+    <div class="size-24 rounded-lg bg-rose-900"></div>
+  </div>
+  ```
