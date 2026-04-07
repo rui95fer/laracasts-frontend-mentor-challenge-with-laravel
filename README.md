@@ -141,3 +141,53 @@
     <div class="size-24 rounded-lg bg-rose-900"></div>
   </div>
   ```
+
+---
+
+## Episode 4 — Product Model and Migration
+
+- **Generate a model, migration, and seeder in one command.**
+  ```bash
+  php artisan make:model Product --migration --seeder
+  ```
+
+- **Store prices in cents (integers) to avoid floating point issues.**
+  ```php
+  // database/migrations/xxxx_create_products_table.php
+  $table->string('name');
+  $table->string('category');
+  $table->string('image');
+  $table->unsignedInteger('price_cents'); // e.g. $6.50 → 650
+  ```
+
+- **Store only one image filename — construct the full path in the template instead.**
+  ```php
+  // Migration: just store the filename
+  $table->string('image'); // e.g. "waffle.jpg"
+  ```
+  ```html
+  <!-- Blade template: build the path where needed -->
+  <img src="{{ asset('images/' . $product->image) }}" />
+  ```
+
+- **Seed data from a JSON file by parsing it inside the seeder.**
+  ```php
+  // database/seeders/ProductSeeder.php
+  public function run(): void
+  {
+      $data = json_decode(file_get_contents(database_path('seeders/data.json')), true);
+
+      foreach ($data as $item) {
+          Product::create([
+              'name'        => $item['name'],
+              'category'    => $item['category'],
+              'image'       => basename($item['image']['mobile']),
+              'price_cents' => $item['price'] * 100,
+          ]);
+      }
+  }
+  ```
+  ```bash
+  php artisan migrate
+  php artisan db:seed --class=ProductSeeder
+  ```
