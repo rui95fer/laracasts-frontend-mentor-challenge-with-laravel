@@ -232,3 +232,44 @@
       <p>{{ $product->name }}</p>
   @endforeach
   ```
+
+---
+
+## Episode 6 — Layout and Product Grid
+
+- **Use Tailwind 4's arbitrary max-width values and the spacing scale (divide px by 4) for containers.**
+  ```html
+  <body class="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-rose-50">
+  ```
+
+- **Build a two-column layout with a fixed sidebar using arbitrary `grid-cols` values.**
+  ```html
+  <body class="grid md:grid-cols-[1fr_400px] gap-8">
+      <main><!-- product grid --></main>
+      <aside class="bg-white p-6"><!-- shopping cart --></aside>
+  </body>
+  ```
+
+- **When you wipe all Tailwind colors, remember to manually restore `white`.**
+  ```css
+  /* resources/css/app.css */
+  @theme {
+    --color-white: hsl(0 0% 100%);
+  }
+  ```
+
+- **Use progressive responsive grid columns to handle the layout at every breakpoint.**
+  ```html
+  <!-- Product grid: 1 col → 2 col → back to 1 (sidebar appears) → 2 → 3 -->
+  <ul class="grid gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      @foreach ($products as $product)
+          <li class="bg-rose-100 aspect-square rounded-xl"></li>
+      @endforeach
+  </ul>
+  ```
+
+- **Design in the browser by applying placeholder colors and sizes first, then refine.**
+  ```html
+  <!-- Rough scaffold to validate layout before adding real content -->
+  <li class="bg-rose-100 aspect-square rounded-xl"></li>
+  ```
