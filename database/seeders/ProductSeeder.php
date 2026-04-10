@@ -15,6 +15,15 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(20)->create();
+        $products = json_decode(file_get_contents(database_path('seeders/data.json')), true);
+
+        foreach ($products as $product) {
+            Product::create([
+                'name' => $product['name'],
+                'category' => $product['category'],
+                'price' => $product['price'],
+                'image' => basename($product['image']['mobile']),
+            ]);
+        }
     }
 }

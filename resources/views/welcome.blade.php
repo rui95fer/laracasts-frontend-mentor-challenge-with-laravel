@@ -14,19 +14,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-<div class="flex flex-col items-center justify-center h-screen gap-8">
+<div class="flex flex-col items-center justify-center min-h-screen gap-8 py-12">
     <h1 class="text-4xl font-bold text-rose-900">{{ config('app.name', 'Laravel') }}</h1>
 
-    <div class="flex gap-4">
-        <div class="size-16 rounded bg-red" title="red"></div>
-        <div class="size-16 rounded bg-green" title="green"></div>
-        <div class="size-16 rounded bg-rose-50 border border-rose-100" title="rose-50"></div>
-        <div class="size-16 rounded bg-rose-100" title="rose-100"></div>
-        <div class="size-16 rounded bg-rose-300" title="rose-300"></div>
-        <div class="size-16 rounded bg-rose-400" title="rose-400"></div>
-        <div class="size-16 rounded bg-rose-500" title="rose-500"></div>
-        <div class="size-16 rounded bg-rose-900" title="rose-900"></div>
-    </div>
+    <ul class="flex flex-col gap-2 w-80">
+        @foreach ($products as $product)
+            <li class="flex justify-between items-center p-4 rounded bg-rose-50 border border-rose-100">
+                <div>
+                    <p class="font-semibold text-rose-900">{{ $product->name }}</p>
+                    <p class="text-sm text-rose-400">{{ $product->category }}</p>
+                </div>
+                <span class="font-bold text-rose-500">${{ number_format($product->price, 2) }}</span>
+            </li>
+        @endforeach
+    </ul>
 </div>
 </body>
 </html>

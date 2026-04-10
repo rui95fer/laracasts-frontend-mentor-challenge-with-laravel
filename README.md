@@ -191,3 +191,44 @@
   php artisan migrate
   php artisan db:seed --class=ProductSeeder
   ```
+
+---
+
+## Episode 5 — Data Seeding
+
+- **Use the `File` facade with `database_path()` to read JSON from inside the `database/` directory.**
+  ```php
+  $data = json_decode(File::get(database_path('seeders/data.json')), true);
+  ```
+
+- **Call specific seeders from `DatabaseSeeder` so `migrate:fresh --seed` runs everything.**
+  ```php
+  // database/seeders/DatabaseSeeder.php
+  public function run(): void
+  {
+      $this->call(ProductSeeder::class);
+  }
+  ```
+  ```bash
+  php artisan migrate:fresh --seed
+  ```
+
+- **Strip the folder path from image filenames using `str_replace` before saving.**
+  ```php
+  'image' => str_replace('./assets/images/', '', $item['image']['mobile']),
+  // "./assets/images/waffle.jpg" → "waffle.jpg"
+  ```
+
+- **Pass all products to a view directly from the route for small datasets.**
+  ```php
+  // routes/web.php
+  Route::get('/', fn () => view('welcome', ['products' => Product::all()]));
+  ```
+
+- **Validate data reaches the frontend with a quick `@foreach` before building the UI.**
+  ```blade
+  {{-- resources/views/welcome.blade.php --}}
+  @foreach ($products as $product)
+      <p>{{ $product->name }}</p>
+  @endforeach
+  ```
