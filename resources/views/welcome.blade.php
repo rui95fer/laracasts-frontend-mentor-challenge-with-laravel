@@ -15,7 +15,7 @@
 </head>
 <body>
 <main class="min-h-screen bg-rose-50 py-12 px-6">
-    <div class="max-w-360 mx-auto flex flex-col lg:flex-row items-start gap-8">
+    <div class="max-w-360 mx-auto flex flex-col lg:flex-row gap-8">
         {{-- Products --}}
         <section class="flex-1 flex flex-col gap-8">
             <h1 class="text-4xl font-bold text-rose-900">Desserts</h1>
@@ -30,7 +30,7 @@
         </section>
 
         {{-- Cart --}}
-        <aside class="w-full lg:w-96 bg-white rounded-2xl p-6">
+        <aside class="w-full lg:w-96 lg:self-start bg-white rounded-2xl p-6">
             <h2 class="text-xl font-bold text-red">Your Cart (0)</h2>
         </aside>
     </div>

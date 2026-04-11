@@ -321,3 +321,44 @@
       <button type="submit">Add to Cart</button>
   </form>
   ```
+
+---
+
+## Episode 8 — Product Card Styling
+
+- **Use `aspect-square` + `object-cover` to make images square without distortion.**
+  ```html
+  <img class="aspect-square object-cover rounded-xl" ... />
+  ```
+
+- **Center a button over the image boundary using a CSS variable + `calc` for robust negative margin.**
+  ```html
+  <form class="flex justify-center" style="--button-height: 3rem">
+      <button class="h-(--button-height) -mt-[calc(var(--button-height)/2)] ...">
+          Add to Cart
+      </button>
+  </form>
+  ```
+
+- **Store SVG icons as Blade components for inline reuse and CSS control.**
+  ```
+  resources/views/components/icons/add-to-cart.blade.php
+  ```
+  ```blade
+  <button class="flex items-center gap-2">
+      <x-icons.add-to-cart />
+      <span>Add to Cart</span>
+  </button>
+  ```
+
+- **Apply hover styles directly with Tailwind's `hover:` variant.**
+  ```html
+  <button class="border border-rose-500 hover:border-red hover:text-red ...">
+  ```
+
+- **Style text hierarchy with size, weight, and color — no extra wrappers needed.**
+  ```html
+  <p class="text-rose-500">{{ $product->category }}</p>
+  <h2 class="text-lg font-medium">{{ $product->name }}</h2>
+  <p class="text-red font-medium">{{ $product->formattedPrice() }}</p>
+  ```

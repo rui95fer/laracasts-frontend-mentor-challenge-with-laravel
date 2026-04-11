@@ -22,7 +22,7 @@
     'Segoe UI Symbol', 'Noto Color Emoji';
 
     --font-weight-*: initial;
-    --font-weight-regular: 400;
-    --font-weight-medium: 600;
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
     --font-weight-bold: 700;
 }
