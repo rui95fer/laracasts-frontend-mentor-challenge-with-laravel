@@ -22,12 +22,8 @@
 
             <ul class="grid lg:grid-cols-3 gap-6">
                 @foreach ($products as $product)
-                    <li class="flex justify-between items-center p-4 rounded bg-white border border-rose-100">
-                        <div>
-                            <h3 class="font-medium text-rose-900">{{ $product->name }}</h3>
-                            <p class="text-sm text-rose-400">{{ $product->category }}</p>
-                        </div>
-                        <span class="font-bold text-red">${{ number_format($product->price, 2) }}</span>
+                    <li>
+                        <x-product :product="$product"/>
                     </li>
                 @endforeach
             </ul>

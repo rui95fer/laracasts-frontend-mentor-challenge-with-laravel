@@ -273,3 +273,51 @@
   <!-- Rough scaffold to validate layout before adding real content -->
   <li class="bg-rose-100 aspect-square rounded-xl"></li>
   ```
+
+---
+
+## Episode 7 — Product Component Semantic Markup
+
+- **Extract repeating UI into a dedicated Blade component and pass data as props.**
+  ```blade
+  {{-- resources/views/components/product.blade.php --}}
+  @props(['product'])
+
+  <li>
+      <article>
+          <img src="{{ Vite::asset('resources/images/' . $product->image) }}" alt="Photo of {{ $product->name }}">
+          <p>{{ $product->category }}</p>
+          <h2>{{ $product->name }}</h2>
+          <p>{{ $product->formattedPrice() }}</p>
+      </article>
+  </li>
+  ```
+  ```blade
+  {{-- welcome.blade.php --}}
+  @foreach ($products as $product)
+      <x-product :product="$product" />
+  @endforeach
+  ```
+
+- **Use `Vite::asset()` to reference images stored in `resources/`.**
+  ```blade
+  <img src="{{ Vite::asset('resources/images/' . $product->image) }}" />
+  ```
+
+- **Add a price formatting helper directly on the model instead of formatting in the view.**
+  ```php
+  // app/Models/Product.php
+  public function formattedPrice(): string
+  {
+      return Number::currency($this->price_cents / 100, 'USD');
+  }
+  ```
+
+- **Wrap the Add to Cart button in a `<form>` with CSRF protection from the start.**
+  ```blade
+  <form method="POST" action="/cart">
+      @csrf
+      {{-- TODO: add hidden product id input --}}
+      <button type="submit">Add to Cart</button>
+  </form>
+  ```
