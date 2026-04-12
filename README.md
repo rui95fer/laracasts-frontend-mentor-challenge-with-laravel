@@ -362,3 +362,51 @@
   <h2 class="text-lg font-medium">{{ $product->name }}</h2>
   <p class="text-red font-medium">{{ $product->formattedPrice() }}</p>
   ```
+
+---
+
+## Episode 9 — Empty Cart UI
+
+- **Organise related Blade components into subfolders for clarity.**
+  ```
+  resources/views/components/cart/
+  ├── index.blade.php        ← cart wrapper (shared heading)
+  ├── empty.blade.php        ← empty state UI
+  └── empty-illustration.blade.php  ← inline SVG
+  ```
+  ```blade
+  {{-- cart/index.blade.php --}}
+  <div class="bg-white rounded-xl p-6">
+      <h2 class="text-red font-bold text-2xl">Your Cart (0)</h2>
+      <x-cart.empty />
+  </div>
+  ```
+
+- **Use inline SVGs as Blade components instead of `<img>` tags — easier to style with CSS.**
+  ```blade
+  {{-- cart/empty-illustration.blade.php --}}
+  <svg ...>...</svg> {{-- paste SVG code directly --}}
+  ```
+  ```blade
+  <x-cart.empty-illustration />
+  ```
+
+- **Wrap a sidebar in a plain `<div>` so its background doesn't stretch to fill the grid row.**
+  ```blade
+  {{-- welcome.blade.php --}}
+  <div> {{-- wrapper stops the aside stretching full height --}}
+      <aside>
+          <x-cart.index />
+      </aside>
+  </div>
+  ```
+
+- **Build empty and populated states as separate components, then toggle between them with a conditional.**
+  ```blade
+  {{-- cart/index.blade.php --}}
+  @if ($cart->isEmpty())
+      <x-cart.empty />
+  @else
+      <x-cart.items :cart="$cart" />
+  @endif
+  ```

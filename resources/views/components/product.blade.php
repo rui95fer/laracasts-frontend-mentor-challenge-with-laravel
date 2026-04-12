@@ -8,18 +8,26 @@
             class="w-full aspect-4/3 lg:aspect-square rounded-xl object-cover"
         >
 
-        <button
-            type="button"
-            class="absolute -bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white border border-rose-400 rounded-full px-6 py-3 text-sm font-semibold text-rose-900 whitespace-nowrap hover:border-red hover:text-red transition-colors"
+        <form
+            method="POST"
+            action="/cart"
+            class="absolute -bottom-5 left-1/2 -translate-x-1/2"
         >
-            <img src="{{ Vite::asset('resources/images/icon-add-to-cart.svg') }}" alt="" class="size-4">
-            Add to Cart
-        </button>
+            @csrf
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+            <button
+                type="submit"
+                class="flex items-center gap-2 bg-white border border-rose-400 rounded-full px-6 py-3 text-sm font-semibold text-rose-900 whitespace-nowrap hover:border-red hover:text-red transition-colors"
+            >
+                <img src="{{ Vite::asset('resources/images/icon-add-to-cart.svg') }}" alt="" class="size-4">
+                Add to Cart
+            </button>
+        </form>
     </div>
 
     <div class="flex flex-col gap-1">
         <p class="text-sm text-rose-400">{{ $product->category }}</p>
         <h3 class="font-semibold text-rose-900">{{ $product->name }}</h3>
-        <p class="font-semibold text-red">{{ $product->formattedPrice }}</p>
+        <data value="{{ $product->price_cents }}" class="font-semibold text-red">{{ $product->formattedPrice }}</data>
     </div>
 </article>
