@@ -410,3 +410,57 @@
       <x-cart.items :cart="$cart" />
   @endif
   ```
+
+---
+
+## Episode 10 — Cart and Cart Item Models
+
+- **Use session ID instead of user auth to identify a cart — no login required.**
+  ```php
+  // carts table migration
+  $table->string('session_id');
+  ```
+
+- **Use `foreignIdFor()` with `cascadeOnDelete()` to set up constrained foreign keys.**
+  ```php
+  // cart_items table migration
+  $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+  $table->foreignIdFor(Cart::class)->constrained()->cascadeOnDelete();
+  $table->unsignedInteger('quantity');
+  ```
+
+- **Add a unique constraint to prevent duplicate product+cart pairs.**
+  ```php
+  $table->unique(['product_id', 'cart_id']);
+  ```
+
+- **Define Eloquent relationships on both sides of the association.**
+  ```php
+  // app/Models/Cart.php
+  public function items()
+  {
+      return $this->hasMany(CartItem::class);
+  }
+
+  // app/Models/CartItem.php
+  public function cart()
+  {
+      return $this->belongsTo(Cart::class);
+  }
+
+  public function product()
+  {
+      return $this->belongsTo(Product::class);
+  }
+  ```
+
+- **Eager load relationships to avoid N+1 queries when iterating cart items.**
+  ```php
+  // routes/web.php
+  $cart = Cart::with('items.product')->first();
+  ```
+  ```blade
+  @foreach ($cart->items as $item)
+      <p>{{ $item->product->name }} x{{ $item->quantity }}</p>
+  @endforeach
+  ```
