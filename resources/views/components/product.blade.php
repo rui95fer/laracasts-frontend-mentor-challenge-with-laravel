@@ -10,11 +10,10 @@
 
         <form
             method="POST"
-            action="/cart"
+            action="{{ route('cart.addOne', $product) }}"
             class="absolute -bottom-5 left-1/2 -translate-x-1/2"
         >
             @csrf
-            <input type="hidden" name="product_id" value="{{ $product->id }}">
             <button
                 type="submit"
                 class="flex items-center gap-2 bg-white border border-rose-400 rounded-full px-6 py-3 text-sm font-semibold text-rose-900 whitespace-nowrap hover:border-red hover:text-red transition-colors"

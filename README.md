@@ -509,3 +509,49 @@
   session()->getId(); // e.g. "abc123" in normal window
   session()->getId(); // e.g. "xyz789" in incognito window
   ```
+
+---
+
+## Episode 12 — Ensure Cart Exists
+
+- **Use `firstOrCreate` to implement `ensureExists` — finds or creates a cart by session ID.**
+  ```php
+  // app/Models/Cart.php
+  public static function ensureExists(): Cart
+  {
+      return static::firstOrCreate(['session_id' => session()->getId()]);
+  }
+  ```
+
+- **Create a dedicated controller for all cart operations instead of putting logic in `web.php`.**
+  ```bash
+  php artisan make:controller CartController
+  ```
+  ```php
+  // routes/web.php
+  Route::post('/cart/{product}', [CartController::class, 'addOne'])->name('cart.addOne');
+  ```
+
+- **Use Ziggy's `route()` helper in Blade to reference named routes in form actions.**
+  ```blade
+  <form method="POST" action="{{ route('cart.addOne', $product) }}">
+      @csrf
+      <button type="submit">Add to Cart</button>
+  </form>
+  ```
+
+- **Add model properties to `$fillable` to prevent mass assignment exceptions.**
+  ```php
+  // app/Models/Cart.php
+  protected $fillable = ['session_id'];
+  ```
+
+- **Call `ensureExists` at the start of any cart write operation, not on page load.**
+  ```php
+  // app/Http/Controllers/CartController.php
+  public function addOne(Product $product): RedirectResponse
+  {
+      $cart = Cart::ensureExists(); // creates cart only if it doesn't exist yet
+      // ... add item to cart
+  }
+  ```
