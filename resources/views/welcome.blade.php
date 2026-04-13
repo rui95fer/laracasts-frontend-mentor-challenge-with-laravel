@@ -31,9 +31,15 @@
 
         {{-- Cart --}}
         <aside class="w-full lg:w-96 lg:self-start bg-white rounded-xl p-6">
-            <h2 class="text-xl font-bold text-red">Your Cart (0)</h2>
+            <h2 class="text-xl font-bold text-red">Your Cart ({{ $cart?->total_quantity ?? 0 }})</h2>
 
-            <x-cart.empty/>
+            @if ($cart)
+                @foreach ($cart->items as $item)
+                    <p>{{ $item->product->name }} x{{ $item->quantity }}</p>
+                @endforeach
+            @else
+                <x-cart.empty/>
+            @endif
         </aside>
     </div>
 </main>

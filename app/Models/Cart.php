@@ -15,6 +15,18 @@ class Cart extends Model
     /** @use HasFactory<CartFactory> */
     use HasFactory;
 
+    public static function ifExists(): ?Cart
+    {
+        return static::with('items.product')
+            ->where('session_id', session()->getId())
+            ->first();
+    }
+
+    public static function ensureExists(): Cart
+    {
+        return static::firstOrCreate(['session_id' => session()->getId()]);
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(CartItem::class);

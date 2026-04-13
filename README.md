@@ -464,3 +464,48 @@
       <p>{{ $item->product->name }} x{{ $item->quantity }}</p>
   @endforeach
   ```
+
+---
+
+## Episode 11 — Session-Based Carts
+
+- **Look up a cart by session ID using a static model method with eager loading.**
+  ```php
+  // app/Models/Cart.php
+  public static function ifExists(): ?Cart
+  {
+      return static::with('items.product')
+          ->where('session_id', session()->getId())
+          ->first();
+  }
+  ```
+  ```php
+  // routes/web.php
+  $cart = Cart::ifExists();
+  ```
+
+- **Never create a cart on page load — only create one when the first item is added.**
+  ```php
+  // Bad: creates a junk cart for every visitor
+  $cart = Cart::firstOrCreate(['session_id' => session()->getId()]);
+
+  // Good: two separate concerns
+  $cart = Cart::ifExists();           // for rendering the UI
+  $cart = Cart::ensureExists();       // only called when adding to cart
+  ```
+
+- **Guard against a null cart in the view before iterating its items.**
+  ```blade
+  @if ($cart)
+      @foreach ($cart->items as $item)
+          <p>{{ $item->product->name }} x{{ $item->quantity }}</p>
+      @endforeach
+  @endif
+  ```
+
+- **Each browser session gets its own isolated cart — test with incognito to verify.**
+  ```php
+  // Two visitors = two different session()->getId() values = two separate carts
+  session()->getId(); // e.g. "abc123" in normal window
+  session()->getId(); // e.g. "xyz789" in incognito window
+  ```
