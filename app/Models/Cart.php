@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Database\Factories\CartFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -14,6 +16,13 @@ class Cart extends Model
 {
     /** @use HasFactory<CartFactory> */
     use HasFactory;
+
+    use MassPrunable;
+
+    public function prunable(): Builder
+    {
+        return static::query()->where('updated_at', '<=', now()->subDays(30));
+    }
 
     public static function ifExists(): ?Cart
     {
@@ -29,10 +38,10 @@ class Cart extends Model
 
     public function addProduct(Product $product): void
     {
-        $this->items()->incrementOrCreate(
-            attributes: ['cart_id' => $this->id, 'product_id' => $product->id],
-            column: 'quantity',
-        );
+        $item = $this->items()->firstOrNew(['product_id' => $product->id]);
+
+        $item->quantity++;
+        $item->save();
     }
 
     public function items(): HasMany

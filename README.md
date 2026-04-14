@@ -590,3 +590,43 @@
   // app/Models/CartItem.php
   protected $fillable = ['product_id', 'quantity'];
   ```
+
+---
+
+## Episode 14 — Pruning Abandoned Carts
+
+- **Use the `MassPrunable` trait to automatically delete stale carts based on `updated_at`.**
+  ```php
+  // app/Models/Cart.php
+  use Illuminate\Database\Eloquent\MassPrunable;
+
+  class Cart extends Model
+  {
+      use MassPrunable;
+
+      public function prunable(): Builder
+      {
+          return static::where('updated_at', '<=', now()->subHours(2));
+      }
+  }
+  ```
+
+- **Test pruning safely with the `--pretend` flag before actually deleting anything.**
+  ```bash
+  php artisan model:prune --pretend  # shows what would be deleted
+  php artisan model:prune            # actually deletes
+  ```
+
+- **Schedule the prune command to run automatically in `routes/console.php`.**
+  ```php
+  // routes/console.php
+  use Illuminate\Support\Facades\Schedule;
+
+  Schedule::command('model:prune')->daily();
+  ```
+
+- **Use `$touches` on CartItem to automatically refresh the parent Cart's `updated_at` on every interaction — resetting the expiry window.**
+  ```php
+  // app/Models/CartItem.php
+  protected $touches = ['cart'];
+  ```

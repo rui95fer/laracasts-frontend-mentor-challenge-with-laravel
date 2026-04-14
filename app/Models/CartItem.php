@@ -15,6 +15,9 @@ class CartItem extends Model
     /** @use HasFactory<CartItemFactory> */
     use HasFactory;
 
+    /** @var list<string> */
+    protected $touches = ['cart'];
+
     public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class);
