@@ -555,3 +555,38 @@
       // ... add item to cart
   }
   ```
+
+---
+
+## Episode 13 — Add to Cart
+
+- **Push cart logic into the Cart model, keeping the controller thin.**
+  ```php
+  // app/Http/Controllers/CartController.php
+  public function addOne(Product $product): RedirectResponse
+  {
+      $cart = Cart::ensureExists();
+      $cart->incrementItem($product);
+      return back();
+  }
+  ```
+
+- **Use `firstOrCreate` on a relationship to either find or create a cart item, then increment.**
+  ```php
+  // app/Models/Cart.php
+  public function incrementItem(Product $product): void
+  {
+      $item = $this->items()->firstOrCreate(
+          ['product_id' => $product->id], // find by this
+          ['quantity'   => 0]             // create with this if not found
+      );
+
+      $item->increment('quantity');
+  }
+  ```
+
+- **Add all mass-assignable fields to `$fillable` on the CartItem model.**
+  ```php
+  // app/Models/CartItem.php
+  protected $fillable = ['product_id', 'quantity'];
+  ```

@@ -27,6 +27,14 @@ class Cart extends Model
         return static::firstOrCreate(['session_id' => session()->getId()]);
     }
 
+    public function addProduct(Product $product): void
+    {
+        $this->items()->incrementOrCreate(
+            attributes: ['cart_id' => $this->id, 'product_id' => $product->id],
+            column: 'quantity',
+        );
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(CartItem::class);
@@ -35,14 +43,14 @@ class Cart extends Model
     protected function totalQuantity(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->items->sum('quantity'),
+            get: fn() => $this->items->sum('quantity'),
         );
     }
 
     protected function totalPrice(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->items->sum(fn (CartItem $item) => $item->subtotal),
+            get: fn() => $this->items->sum(fn(CartItem $item) => $item->subtotal),
         );
     }
 }

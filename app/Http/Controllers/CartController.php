@@ -12,12 +12,7 @@ class CartController extends Controller
     {
         $cart = Cart::ensureExists();
 
-        $cartItem = $cart->items()->firstOrCreate(
-            ['product_id' => $product->id],
-            ['quantity' => 0],
-        );
-
-        $cartItem->increment('quantity');
+        $cart->addProduct($product);
 
         return back();
     }
