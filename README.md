@@ -630,3 +630,37 @@
   // app/Models/CartItem.php
   protected $touches = ['cart'];
   ```
+
+---
+
+## Episode 15 — Total Cart Quantity
+
+- **Add a `totalQuantity()` helper on the Cart model to sum all item quantities.**
+  ```php
+  // app/Models/Cart.php
+  public function totalQuantity(): int
+  {
+      return $this->items->sum('quantity');
+  }
+  ```
+
+- **Pass the cart as a prop to the cart Blade component.**
+  ```blade
+  {{-- welcome.blade.php --}}
+  <x-cart.index :cart="$cart" />
+  ```
+  ```blade
+  {{-- cart/index.blade.php --}}
+  @props(['cart'])
+  <h2>Your Cart ({{ $cart?->totalQuantity() ?? 0 }})</h2>
+  ```
+
+- **Toggle between empty and active cart states using `totalQuantity`.**
+  ```blade
+  {{-- cart/index.blade.php --}}
+  @if ($cart && $cart->totalQuantity() > 0)
+      <x-cart.active :cart="$cart" />
+  @else
+      <x-cart.empty />
+  @endif
+  ```
