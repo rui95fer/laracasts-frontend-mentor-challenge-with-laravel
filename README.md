@@ -664,3 +664,46 @@
       <x-cart.empty />
   @endif
   ```
+
+---
+
+## Episode 16 — Active Cart UI
+
+- **Add a `formattedTotal()` helper on CartItem to keep price calculation out of the template.**
+  ```php
+  // app/Models/CartItem.php
+  public function formattedTotal(): string
+  {
+      return Number::currency($this->quantity * $this->product->price_cents / 100, 'USD');
+  }
+  ```
+  ```blade
+  <span>{{ $item->formattedTotal() }}</span>
+  ```
+
+- **Use `$attributes->merge()` on SVG components to allow passing Tailwind classes from outside.**
+  ```blade
+  {{-- resources/views/components/icons/delete.blade.php --}}
+  <svg {{ $attributes->merge(['class' => '']) }} fill="currentColor" ...>
+      ...
+  </svg>
+  ```
+  ```blade
+  {{-- Usage: control size and color from the parent --}}
+  <x-icons.delete class="size-2.5 text-rose-500 hover:text-red" />
+  ```
+
+- **Add a circular border to a button wrapping an SVG icon, not to the SVG itself.**
+  ```blade
+  <button class="border border-rose-500 rounded-full p-1 items-center">
+      <x-icons.delete class="size-2.5 text-rose-500" />
+  </button>
+  ```
+
+- **Use `justify-between` + `items-center` on a flex `<li>` to push content and the delete button to opposite ends.**
+  ```blade
+  <li class="flex justify-between items-center border-b border-rose-100 py-4">
+      <div><!-- name, quantity, price --></div>
+      <button><!-- delete icon --></button>
+  </li>
+  ```

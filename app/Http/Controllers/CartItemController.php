@@ -6,9 +6,9 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 
-class CartController extends Controller
+class CartItemController extends Controller
 {
-    public function addOne(Product $product): RedirectResponse
+    public function store(Product $product): RedirectResponse
     {
         $cart = Cart::ensureExists();
 

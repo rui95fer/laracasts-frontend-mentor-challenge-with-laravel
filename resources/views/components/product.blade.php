@@ -10,7 +10,7 @@
 
         <form
             method="POST"
-            action="{{ route('cart.addOne', $product) }}"
+            action="{{ route('cart.items.store', $product) }}"
             class="absolute -bottom-5 left-1/2 -translate-x-1/2"
         >
             @csrf
