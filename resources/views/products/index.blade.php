@@ -18,4 +18,5 @@
             <x-cart :cart="$cart"/>
         </div>
     </main>
+
 </x-layouts.app>

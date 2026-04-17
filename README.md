@@ -707,3 +707,54 @@
       <button><!-- delete icon --></button>
   </li>
   ```
+
+---
+
+## Episode 17 — Cart UI Continued
+
+- **Guard against null cart in all places with the null-safe operator and a fallback.**
+  ```blade
+  {{-- Prevent crash when cart has been pruned --}}
+  <h2>Your Cart ({{ $cart?->totalItemsCount() ?? 0 }})</h2>
+
+  @if ($cart && $cart->totalItemsCount() > 0)
+      <x-cart.active :cart="$cart" />
+  @else
+      <x-cart.empty />
+  @endif
+  ```
+
+- **Add a `formattedTotal()` method on the Cart model to sum all line item totals.**
+  ```php
+  // app/Models/Cart.php
+  public function formattedTotal(): string
+  {
+      $total = $this->items->sum(fn ($item) => $item->product->price_cents * $item->quantity);
+      return Number::currency($total / 100, 'USD');
+  }
+  ```
+
+- **Wrap cart sections in a `flex flex-col` container to control spacing with `gap`.**
+  ```blade
+  <div class="flex flex-col gap-8">
+      <ul><!-- cart items --></ul>
+      <div><!-- order total --></div>
+      <div><!-- callout banner --></div>
+      <button><!-- confirm order --></button>
+  </div>
+  ```
+
+- **Build the carbon-neutral callout as a flex row with an inline SVG icon.**
+  ```blade
+  <div class="flex justify-center items-center gap-2 bg-rose-50 rounded-lg py-4">
+      <x-icons.tree class="text-green" />
+      <p>This is a <span class="font-bold">carbon-neutral</span> delivery</p>
+  </div>
+  ```
+
+- **Style the confirm order button with full rounding and generous padding.**
+  ```blade
+  <button class="w-full bg-red text-white rounded-full px-6 py-4">
+      Confirm Order
+  </button>
+  ```
