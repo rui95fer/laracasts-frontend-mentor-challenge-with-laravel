@@ -6,9 +6,12 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    $cart = Cart::ifExists();
+
     return view('products.index', [
         'products' => Product::all(),
-        'cart' => Cart::ifExists(),
+        'cart' => $cart,
+        'cartItems' => $cart?->items->keyBy('product_id') ?? collect(),
     ]);
 });
 

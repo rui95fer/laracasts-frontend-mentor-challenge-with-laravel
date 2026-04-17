@@ -758,3 +758,54 @@
       Confirm Order
   </button>
   ```
+
+---
+
+## Episode 18 — Increment and Decrement UI
+
+- **Add a `quantityOf()` method on Cart to check how many of a product are in the cart.**
+  ```php
+  // app/Models/Cart.php
+  public function quantityOf(Product $product): int
+  {
+      return $this->items->firstWhere('product_id', $product->id)?->quantity ?? 0;
+  }
+  ```
+
+- **Cache the result in a `@php` block when a value is used multiple times in a component.**
+  ```blade
+  @php $quantity = $cart?->quantityOf($product) ?? 0; @endphp
+
+  @if ($quantity)
+      {{-- increment/decrement UI --}}
+  @else
+      {{-- add to cart button --}}
+  @endif
+  ```
+
+- **Pass the cart into the product component so it can check per-product quantities.**
+  ```blade
+  {{-- welcome.blade.php --}}
+  <x-product :product="$product" :cart="$cart" />
+
+  {{-- components/product.blade.php --}}
+  @props(['product', 'cart'])
+  ```
+
+- **Use `-translate-y-1/2` to overlap a button onto the image — simpler than CSS variable calc.**
+  ```blade
+  {{-- Before (overcomplicated): --}}
+  <form style="--button-height: 3rem" class="-mt-[calc(var(--button-height)/2)]">
+
+  {{-- After (simple): --}}
+  <div class="flex justify-center -translate-y-1/2">
+      <button class="... py-3 rounded-full">...</button>
+  </div>
+  ```
+
+- **Inline SVG icons directly in a button and control color with `currentColor`.**
+  ```blade
+  <button class="border-2 border-white rounded-full p-1">
+      <svg class="size-2.5 text-white" fill="currentColor" ...>...</svg>
+  </button>
+  ```

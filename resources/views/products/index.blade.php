@@ -8,7 +8,7 @@
                 <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($products as $product)
                         <li>
-                            <x-product :product="$product"/>
+                            <x-product :product="$product" :cartItem="$cartItems->get($product->id)"/>
                         </li>
                     @endforeach
                 </ul>
