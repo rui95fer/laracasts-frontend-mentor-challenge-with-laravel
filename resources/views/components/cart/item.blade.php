@@ -7,14 +7,18 @@
         <div class="flex items-center gap-3 text-sm">
             <span class="font-semibold text-red" aria-label="{{ $item->quantity }} times">{{ $item->quantity }}x</span>
             <span class="text-rose-400">@ {{ $item->product->formatted_price }}</span>
-            <span class="font-semibold text-rose-500" aria-label="subtotal">${{ number_format($item->subtotal, 2) }}</span>
+            <data value="{{ $item->subtotal }}" class="font-semibold text-rose-500">${{ number_format($item->subtotal, 2) }}</data>
         </div>
     </div>
 
-    <button
-        type="button"
-        aria-label="Remove {{ $item->product->name }}"
-        class="flex items-center justify-center size-5 rounded-full border-2 border-rose-400 text-rose-400 hover:border-rose-900 hover:text-rose-900 transition-colors cursor-pointer shrink-0">
-        <x-icons.remove-item/>
-    </button>
+    <form method="POST" action="{{ route('cart.items.destroy', $item) }}">
+        @csrf
+        @method('DELETE')
+        <button
+            type="submit"
+            aria-label="Remove {{ $item->product->name }}"
+            class="flex items-center justify-center size-5 rounded-full border-2 border-rose-400 text-rose-400 hover:border-rose-900 hover:text-rose-900 transition-colors cursor-pointer shrink-0">
+            <x-icons.remove-item/>
+        </button>
+    </form>
 </li>

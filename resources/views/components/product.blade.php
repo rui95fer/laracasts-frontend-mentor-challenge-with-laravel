@@ -5,7 +5,7 @@
         <img
             src="{{ Vite::asset('resources/images/' . $product->image) }}"
             alt="{{ $product->name }}"
-            class="w-full aspect-4/3 lg:aspect-square rounded-xl object-cover {{ $cartItem ? 'ring-2 ring-red' : '' }}"
+            @class(['w-full aspect-4/3 lg:aspect-square rounded-xl object-cover', 'ring-2 ring-red' => $cartItem])
         >
 
         <div class="absolute -bottom-5 left-1/2 -translate-x-1/2">

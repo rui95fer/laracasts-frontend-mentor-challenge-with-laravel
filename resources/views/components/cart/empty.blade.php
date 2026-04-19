@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center gap-4 py-8">
+<div class="flex flex-col items-center gap-4 mt-4 py-8">
     <img
         src="{{ Vite::asset('resources/images/illustration-empty-cart.svg') }}"
         alt=""

@@ -861,3 +861,35 @@
   // routes/web.php
   Route::patch('/cart/{product}', [CartController::class, 'removeOne'])->name('cart.removeOne');
   ```
+
+---
+
+## Episode 20 — Remove Cart Item Entirely
+
+- **Add a dedicated DELETE route that targets a `CartItem` directly, not a `Product`.**
+  ```php
+  // routes/web.php
+  Route::delete('/cart/{cartItem}', [CartController::class, 'removeAll'])->name('cart.removeAll');
+  ```
+
+- **Keep the controller action minimal — no need for a model method when it's a single delete.**
+  ```php
+  // app/Http/Controllers/CartController.php
+  public function removeAll(CartItem $cartItem): RedirectResponse
+  {
+      $cartItem->delete();
+      return back();
+  }
+  ```
+
+- **Wrap the delete button in a form with `@method('DELETE')` to send the correct HTTP verb.**
+  ```blade
+  {{-- cart/active.blade.php --}}
+  <form method="POST" action="{{ route('cart.removeAll', $item) }}">
+      @csrf
+      @method('DELETE')
+      <button type="submit">
+          <x-icons.delete class="size-3 text-rose-400" />
+      </button>
+  </form>
+  ```
