@@ -40,7 +40,7 @@ class Cart extends Model
     {
         $item = $this->items()->firstOrNew(['product_id' => $product->id]);
 
-        $item->quantity++;
+        $item->quantity = ($item->quantity ?? 0) + 1;
         $item->save();
     }
 

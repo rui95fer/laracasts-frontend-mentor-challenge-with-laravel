@@ -28,6 +28,20 @@ class CartItem extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function belongsToCurrentSession(): bool
+    {
+        return $this->cart->session_id === session()->getId();
+    }
+
+    public function setQuantity(int $quantity): void
+    {
+        if ($quantity <= 0) {
+            $this->delete();
+        } else {
+            $this->update(['quantity' => $quantity]);
+        }
+    }
+
     protected function subtotal(): Attribute
     {
         return Attribute::make(

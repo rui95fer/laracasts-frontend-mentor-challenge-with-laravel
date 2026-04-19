@@ -10,7 +10,7 @@
 
         <div class="absolute -bottom-5 left-1/2 -translate-x-1/2">
             @if ($cartItem)
-                <x-product.quantity-stepper :quantity="$cartItem->quantity"/>
+                <x-product.quantity-stepper :cartItem="$cartItem"/>
             @else
                 <form method="POST" action="{{ route('cart.items.store', $product) }}">
                     @csrf

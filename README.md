@@ -809,3 +809,55 @@
       <svg class="size-2.5 text-white" fill="currentColor" ...>...</svg>
   </button>
   ```
+
+---
+
+## Episode 19 — Decrement and Delete Functionality
+
+- **Reuse the existing `addOne` route and controller for the increment button — just wire up the form.**
+  ```blade
+  <form method="POST" action="{{ route('cart.addOne', $product) }}">
+      @csrf
+      <button type="submit">+</button>
+  </form>
+  ```
+
+- **Use `ifExists()` (not `ensureExists()`) in the decrement controller — never create a cart just to remove from it.**
+  ```php
+  // app/Http/Controllers/CartController.php
+  public function removeOne(Product $product): RedirectResponse
+  {
+      Cart::ifExists()?->decrementItem($product);
+      return back();
+  }
+  ```
+
+- **Decrement quantity by one, but delete the cart item entirely when quantity reaches zero.**
+  ```php
+  // app/Models/Cart.php
+  public function decrementItem(Product $product): void
+  {
+      $item = $this->items->firstWhere('product_id', $product->id);
+
+      if (!$item) return;
+
+      if ($item->quantity > 1) {
+          $item->decrement('quantity');
+      } else {
+          $item->delete();
+      }
+  }
+  ```
+
+- **Use `@method('PATCH')` to send a PATCH request through an HTML form.**
+  ```blade
+  <form method="POST" action="{{ route('cart.removeOne', $product) }}">
+      @csrf
+      @method('PATCH')
+      <button type="submit">-</button>
+  </form>
+  ```
+  ```php
+  // routes/web.php
+  Route::patch('/cart/{product}', [CartController::class, 'removeOne'])->name('cart.removeOne');
+  ```
