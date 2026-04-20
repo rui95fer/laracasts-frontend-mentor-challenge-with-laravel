@@ -35,7 +35,7 @@
 <div
     id="order-confirmation"
     popover
-    class="fixed inset-0 m-auto w-140 rounded-xl bg-white p-10 shadow-xl backdrop:bg-black/50"
+    class="fixed inset-0 m-auto w-140 rounded-xl bg-white p-10 shadow-xl opacity-0 scale-95 open:opacity-100 open:scale-100 starting:open:opacity-0 starting:open:scale-95 transition-all transition-discrete duration-300 ease-out backdrop:bg-black/50"
 >
     <p>Order confirmed! This is a test message.</p>
     <button popovertarget="order-confirmation" popovertargetaction="hide">Close</button>

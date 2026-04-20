@@ -935,3 +935,54 @@
       ...
   </div>
   ```
+
+---
+
+## Episode 22 — Modal Enter and Leave Transitions
+
+- **Use `@starting-style` with `transition` to animate a popover on enter and leave.**
+  ```html
+  <div popover
+      class="
+          transition duration-200 transition-discrete
+          opacity-100 translate-y-0
+          starting:open:opacity-0 starting:open:scale-95
+          open:opacity-100
+      ">
+  </div>
+  ```
+
+- **Use `open:` prefix to define styles while the popover is visible.**
+  ```html
+  <!-- open: = styles applied while popover is showing -->
+  <!-- starting:open: = styles applied at the very start of the enter transition -->
+  <div popover class="open:opacity-100 starting:open:opacity-0">
+  ```
+
+- **Add `transition-discrete` to enable transitions on `display` changes (block ↔ none).**
+  ```html
+  <div popover class="transition transition-discrete duration-200 ...">
+  ```
+
+- **Animate the backdrop separately using `backdrop:` with explicit transition properties.**
+  ```html
+  <div popover class="
+      open:backdrop:opacity-100
+      starting:open:backdrop:opacity-0
+      backdrop:bg-black/50
+      backdrop:[transition-property:opacity,display]
+      backdrop:transition-discrete
+      backdrop:duration-200
+  ">
+  ```
+
+- **Set the popover wrapper to `bg-transparent` so inner `rounded` corners aren't clipped.**
+  ```html
+  <!-- Outer popover: transparent, handles transitions -->
+  <div popover class="bg-transparent mx-auto ...">
+      <!-- Inner container: white background with rounded corners -->
+      <div class="bg-white rounded-lg p-8 max-w-full w-120">
+          ...
+      </div>
+  </div>
+  ```
