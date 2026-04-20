@@ -23,6 +23,20 @@
 </div>
 
 {{-- Confirm Order --}}
-<button type="button" class="mt-4 w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red/90 transition-colors cursor-pointer">
+<button
+    type="button"
+    popovertarget="order-confirmation"
+    class="mt-4 w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red/90 transition-colors cursor-pointer"
+>
     Confirm Order
 </button>
+
+{{-- Order Confirmation Popover --}}
+<div
+    id="order-confirmation"
+    popover
+    class="fixed inset-0 m-auto w-140 rounded-xl bg-white p-10 shadow-xl backdrop:bg-black/50"
+>
+    <p>Order confirmed! This is a test message.</p>
+    <button popovertarget="order-confirmation" popovertargetaction="hide">Close</button>
+</div>

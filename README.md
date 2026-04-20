@@ -893,3 +893,45 @@
       </button>
   </form>
   ```
+
+---
+
+## Episode 21 — HTML Popover
+
+- **Use the native HTML `popover` attribute to build a modal — no JavaScript needed.**
+  ```html
+  <!-- The popover panel (hidden by default) -->
+  <div popover id="order-confirmation">
+      I am a cool popover
+  </div>
+
+  <!-- The trigger button -->
+  <button popovertarget="order-confirmation">Confirm Order</button>
+  ```
+
+- **The popover is placed in the browser's top layer — no z-index or portal tricks needed.**
+  ```html
+  <!-- The browser automatically places it above everything else,
+       no need to move it to the end of <body> or fight z-index -->
+  <div popover id="order-confirmation">...</div>
+  ```
+
+- **Center the popover with `mx-auto` — Tailwind's reset fights the browser's default centering.**
+  ```html
+  <div popover id="order-confirmation" class="mx-auto">
+      ...
+  </div>
+  ```
+
+- **Style the backdrop with Tailwind's `backdrop:` variant — add blur for a polished effect.**
+  ```css
+  /* app.css — restore black so backdrop color works */
+  @theme {
+    --color-black: hsl(0 0% 0%);
+  }
+  ```
+  ```html
+  <div popover class="backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+      ...
+  </div>
+  ```
