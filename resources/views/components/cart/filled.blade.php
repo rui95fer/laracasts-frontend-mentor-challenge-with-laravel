@@ -35,8 +35,41 @@
 <div
     id="order-confirmation"
     popover
-    class="fixed inset-0 m-auto w-140 rounded-xl bg-white p-10 shadow-xl opacity-0 scale-95 open:opacity-100 open:scale-100 starting:open:opacity-0 starting:open:scale-95 transition-all transition-discrete duration-300 ease-out backdrop:bg-black/50"
+    class="fixed inset-x-0 bottom-0 top-auto m-0 w-full rounded-t-2xl bg-white p-6 shadow-xl sm:inset-0 sm:m-auto sm:w-140 sm:rounded-2xl sm:p-10 opacity-0 scale-95 open:opacity-100 open:scale-100 starting:open:opacity-0 starting:open:scale-95 transition-all transition-discrete duration-300 ease-out"
 >
-    <p>Order confirmed! This is a test message.</p>
-    <button popovertarget="order-confirmation" popovertargetaction="hide">Close</button>
+    <x-icons.order-confirmed class="text-green"/>
+
+    <h2 class="mt-6 text-4xl font-bold leading-tight text-rose-900">Order Confirmed</h2>
+    <p class="mt-3 text-sm text-rose-400">We hope you enjoy your food!</p>
+
+    <div class="mt-8 rounded-xl bg-rose-50 overflow-hidden">
+        <ul class="px-6">
+            @foreach ($cart->items as $item)
+                <li class="flex items-center gap-4 py-4 border-b border-rose-100">
+                    <img
+                        src="{{ Vite::asset('resources/images/' . $item->product->image) }}"
+                        alt="{{ $item->product->name }}"
+                        class="size-12 rounded-sm object-cover shrink-0"
+                    >
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-rose-900 truncate">{{ $item->product->name }}</p>
+                        <div class="flex items-center gap-3 mt-1 text-sm">
+                            <span class="font-semibold text-red">{{ $item->quantity }}x</span>
+                            <span class="text-rose-400">@ {{ $item->product->formatted_price }}</span>
+                        </div>
+                    </div>
+                    <data value="{{ $item->subtotal }}" class="font-semibold text-rose-900 shrink-0">
+                        ${{ number_format($item->subtotal, 2) }}
+                    </data>
+                </li>
+            @endforeach
+        </ul>
+
+        <dl class="flex items-center justify-between px-6 py-6">
+            <dt class="text-sm text-rose-900">Order Total</dt>
+            <dd class="text-2xl font-bold text-rose-900">
+                <data value="{{ $cart->total_price }}">${{ number_format($cart->total_price, 2) }}</data>
+            </dd>
+        </dl>
+    </div>
 </div>

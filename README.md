@@ -986,3 +986,48 @@
       </div>
   </div>
   ```
+
+---
+
+## Episode 23 — Order Confirmation UI
+
+- **Extract the confirmation popover into its own component to keep `active.blade.php` clean.**
+  ```
+  resources/views/components/cart/
+  └── confirmation.blade.php  ← new
+  ```
+  ```blade
+  {{-- cart/active.blade.php --}}
+  <x-cart.confirmation :cart="$cart" />
+  ```
+
+- **Pass the cart as a prop into the confirmation component to reuse cart item data.**
+  ```blade
+  {{-- cart/confirmation.blade.php --}}
+  @props(['cart'])
+
+  @foreach ($cart->items as $item)
+      ...
+  @endforeach
+  ```
+
+- **Reuse the same line item markup from the sidebar — just remove the delete button.**
+  ```blade
+  <li class="flex justify-between items-center border-b border-rose-100 py-4">
+      <div class="flex items-center gap-4">
+          <img src="{{ Vite::asset('resources/images/' . $item->product->image) }}"
+               class="size-12 rounded-md object-cover" />
+          <div>
+              <h2 class="font-bold">{{ $item->product->name }}</h2>
+              <span class="text-red font-medium">{{ $item->quantity }}x</span>
+              <span class="text-rose-500">{{ $item->product->formattedPrice() }}</span>
+          </div>
+      </div>
+      <span class="font-medium text-lg">{{ $item->formattedTotal() }}</span>
+  </li>
+  ```
+
+- **Cap the popover height with `max-h-dvh` and allow scrolling for long order lists.**
+  ```html
+  <div popover class="max-h-dvh overflow-y-auto ...">
+  ```
