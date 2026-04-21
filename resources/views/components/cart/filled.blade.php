@@ -72,4 +72,15 @@
             </dd>
         </dl>
     </div>
+
+    <form method="POST" action="{{ route('cart.destroy') }}" class="mt-6">
+        @csrf
+        @method('DELETE')
+        <button
+            type="submit"
+            class="w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red/90 transition-colors cursor-pointer"
+        >
+            Start New Order
+        </button>
+    </form>
 </div>

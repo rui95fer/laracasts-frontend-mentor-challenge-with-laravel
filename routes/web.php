@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Models\Cart;
 use App\Models\Product;
@@ -15,6 +16,7 @@ Route::get('/', function () {
     ]);
 });
 
+Route::delete('/cart', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::post('/cart/items/{product}', [CartItemController::class, 'store'])->name('cart.items.store');
 Route::patch('/cart/items/{cartItem}', [CartItemController::class, 'update'])->name('cart.items.update');
 Route::delete('/cart/items/{cartItem}', [CartItemController::class, 'destroy'])->name('cart.items.destroy');

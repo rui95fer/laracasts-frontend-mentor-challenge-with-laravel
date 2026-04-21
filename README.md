@@ -1031,3 +1031,46 @@
   ```html
   <div popover class="max-h-dvh overflow-y-auto ...">
   ```
+
+---
+
+## Episode 24 — Clearing the Cart
+
+- **Add a `cart.emptyCart` route at the top of `web.php` to avoid being shadowed by dynamic routes.**
+  ```php
+  // routes/web.php — place BEFORE dynamic /{product} routes
+  Route::post('/cart/empty', [CartController::class, 'emptyCart'])->name('cart.emptyCart');
+  ```
+
+- **Delete all cart items in the controller — no need for a model method.**
+  ```php
+  // app/Http/Controllers/CartController.php
+  public function emptyCart(): RedirectResponse
+  {
+      Cart::ifExists()?->items()->delete();
+      return back();
+  }
+  ```
+
+- **Wrap the "Start New Order" button in a form pointing to the clear route.**
+  ```blade
+  <form method="POST" action="{{ route('cart.emptyCart') }}">
+      @csrf
+      <button type="submit" class="w-full bg-red text-white rounded-full px-6 py-4">
+          Start New Order
+      </button>
+  </form>
+  ```
+
+- **Never apply `display` utilities like `flex` directly on a `popover` element — it overrides the browser's `display: none` and breaks the hide/show behaviour. Use an inner wrapper div instead.**
+  ```html
+  <!-- Wrong: flex on the popover itself breaks visibility -->
+  <div popover class="flex flex-col gap-6">...</div>
+
+  <!-- Right: open: prefix or an inner wrapper -->
+  <div popover class="open:flex open:flex-col open:gap-6">...</div>
+  <!-- or -->
+  <div popover>
+      <div class="flex flex-col gap-6">...</div>
+  </div>
+  ```
