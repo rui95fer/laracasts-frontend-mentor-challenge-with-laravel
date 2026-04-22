@@ -35,11 +35,12 @@
 <div
     id="order-confirmation"
     popover
-    class="fixed inset-x-0 bottom-0 top-auto m-0 w-full rounded-t-2xl bg-white p-6 shadow-xl sm:inset-0 sm:m-auto sm:w-140 sm:rounded-2xl sm:p-10 opacity-0 scale-95 open:opacity-100 open:scale-100 starting:open:opacity-0 starting:open:scale-95 transition-all transition-discrete duration-300 ease-out"
+    aria-labelledby="order-confirmation-heading"
+    class="fixed inset-x-4 inset-y-4 m-auto w-auto max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl bg-white p-6 shadow-xl sm:inset-0 sm:m-auto sm:w-140 sm:max-h-[90dvh] sm:p-10 opacity-0 scale-95 open:opacity-100 open:scale-100 starting:open:opacity-0 starting:open:scale-95 transition-all transition-discrete duration-300 ease-out"
 >
     <x-icons.order-confirmed class="text-green"/>
 
-    <h2 class="mt-6 text-4xl font-bold leading-tight text-rose-900">Order Confirmed</h2>
+    <h2 id="order-confirmation-heading" class="mt-6 text-4xl font-bold leading-tight text-rose-900">Order Confirmed</h2>
     <p class="mt-3 text-sm text-rose-400">We hope you enjoy your food!</p>
 
     <div class="mt-8 rounded-xl bg-rose-50 overflow-hidden">

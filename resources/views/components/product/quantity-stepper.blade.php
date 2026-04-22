@@ -1,6 +1,6 @@
 @props(['cartItem'])
 
-<fieldset aria-label="Quantity" class="flex items-center justify-between bg-red rounded-full px-4 py-3 w-40">
+<div role="group" aria-label="Quantity" class="flex items-center justify-between bg-red rounded-full px-4 py-3 w-40">
     <form method="POST" action="{{ route('cart.items.update', $cartItem) }}">
         @csrf
         @method('PATCH')
@@ -33,4 +33,4 @@
             <x-icons.increment/>
         </button>
     </form>
-</fieldset>
+</div>

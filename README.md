@@ -1074,3 +1074,33 @@
       <div class="flex flex-col gap-6">...</div>
   </div>
   ```
+
+---
+
+## Episode 25 — Responsive Design Check
+
+- **Semantic HTML and native form elements give you keyboard accessibility for free.**
+  ```html
+  <!-- Tab navigable, space/enter submittable — no JS needed -->
+  <form method="POST" action="...">
+      @csrf
+      <button type="submit">Add to Cart</button>
+  </form>
+  ```
+
+- **Prevent flex children from shrinking with `shrink-0` on icons inside flex containers.**
+  ```html
+  <x-icons.confirmation class="size-12 text-green shrink-0" />
+  ```
+
+- **Use `calc(100dvh - 2rem)` to give the modal breathing room from the viewport edges.**
+  ```html
+  <div popover class="max-h-[calc(100dvh-2rem)] overflow-y-auto ...">
+  ```
+
+- **Prefer `dvh` over `vh` for mobile — it accounts for the browser address bar height.**
+  ```html
+  <!-- vh: ignores browser chrome, can clip content on mobile -->
+  <!-- dvh: dynamic viewport height, always accurate -->
+  <div class="max-h-[calc(100dvh-2rem)]">
+  ```

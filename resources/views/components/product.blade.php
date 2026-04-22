@@ -28,7 +28,7 @@
 
     <div class="flex flex-col gap-1">
         <p class="text-sm text-rose-400">{{ $product->category }}</p>
-        <h3 class="font-semibold text-rose-900">{{ $product->name }}</h3>
+        <h2 class="font-semibold text-rose-900">{{ $product->name }}</h2>
         <data value="{{ $product->price }}" class="font-semibold text-red">{{ $product->formattedPrice }}</data>
     </div>
 </article>
