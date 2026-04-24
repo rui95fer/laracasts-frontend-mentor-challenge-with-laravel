@@ -26,7 +26,7 @@
 <button
     type="button"
     popovertarget="order-confirmation"
-    class="mt-4 w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red/90 transition-colors cursor-pointer"
+    class="mt-4 w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red-dark transition-colors cursor-pointer"
 >
     Confirm Order
 </button>
@@ -79,7 +79,7 @@
         @method('DELETE')
         <button
             type="submit"
-            class="w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red/90 transition-colors cursor-pointer"
+            class="w-full bg-red text-white font-semibold py-4 rounded-full hover:bg-red-dark transition-colors cursor-pointer"
         >
             Start New Order
         </button>

@@ -27,6 +27,7 @@
     --color-white: #fff;
     --color-black: #000;
     --color-red: hsl(14, 86%, 42%);
+    --color-red-dark: hsl(14, 86%, 35%);
     --color-green: hsl(159, 69%, 38%);
     --color-rose-50: hsl(20, 50%, 98%);
     --color-rose-100: hsl(13, 31%, 94%);

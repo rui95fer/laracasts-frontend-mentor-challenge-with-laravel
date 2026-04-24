@@ -1104,3 +1104,36 @@
   <!-- dvh: dynamic viewport height, always accurate -->
   <div class="max-h-[calc(100dvh-2rem)]">
   ```
+
+---
+
+## Episode 26 — Hover States
+
+- **Use `group` + `group-hover:` to change an SVG's color when its parent button is hovered.**
+  ```html
+  <button class="group border-2 border-white rounded-full p-1">
+      <svg class="size-2.5 text-white group-hover:text-red" fill="currentColor">...</svg>
+  </button>
+  ```
+
+- **Apply a conditional border to the product image using a ternary inside `class`.**
+  ```blade
+  <img class="{{ $quantity ? 'border-2 border-red' : '' }} aspect-square object-cover rounded-xl" />
+  ```
+
+- **Create a darker hover color with CSS `color-mix()` directly in the Tailwind theme.**
+  ```css
+  /* app.css */
+  @theme {
+    --color-red-dark: color-mix(in srgb, var(--color-red) 70%, black);
+  }
+  ```
+  ```html
+  <button class="bg-red hover:bg-red-dark transition">Confirm Order</button>
+  ```
+
+- **Tailwind uses `color-mix` under the hood for opacity modifiers like `/50`.**
+  ```html
+  <!-- bg-black/50 compiles to: color-mix(in srgb, black 50%, transparent) -->
+  <div class="backdrop:bg-black/50">
+  ```
