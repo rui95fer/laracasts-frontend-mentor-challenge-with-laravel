@@ -1137,3 +1137,33 @@
   <!-- bg-black/50 compiles to: color-mix(in srgb, black 50%, transparent) -->
   <div class="backdrop:bg-black/50">
   ```
+
+---
+
+## Episode 27 — Bonus: Deployment to Laravel Cloud
+
+- **Enable the scheduler on Laravel Cloud to keep the pruning task running in production.**
+  ```
+  Laravel Cloud → App Settings → Enable Scheduler
+  ```
+  ```php
+  // routes/console.php — already set up, just needs the scheduler enabled on the server
+  Schedule::command('model:prune')->daily();
+  ```
+
+- **Use MySQL instead of SQLite in production — SQLite is not suitable for cloud deployments.**
+  ```
+  Laravel Cloud → Add Database → MySQL (dev tier)
+  ```
+
+- **Run seeders manually once in production with `--force` to bypass the production guard.**
+  ```bash
+  php artisan db:seed --class=ProductSeeder --force
+  ```
+
+- **Use `import.meta.glob` in `app.js` so Vite includes images in its production manifest.**
+  ```js
+  // resources/js/app.js
+  import.meta.glob(['../images/**']);
+  ```
+  > Without this, `Vite::asset()` calls will throw a "unable to locate file in Vite manifest" 500 error in production.
